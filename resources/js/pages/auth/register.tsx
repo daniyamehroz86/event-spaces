@@ -14,6 +14,7 @@ type RegisterForm = {
     email: string;
     password: string;
     password_confirmation: string;
+    type: string; // 🔧 Added type field
 };
 
 export default function Register() {
@@ -22,6 +23,7 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        type: 'user', // 🔧 Default to 'user'
     });
 
     const submit: FormEventHandler = (e) => {
@@ -67,6 +69,23 @@ export default function Register() {
                             placeholder="email@example.com"
                         />
                         <InputError message={errors.email} />
+                    </div>
+
+                     {/* Type Dropdown */}
+                     <div className="grid gap-2">
+                        <Label htmlFor="type">Select Type</Label>
+                        <select
+                            id="type"
+                            value={data.type}
+                            onChange={(e) => setData('type', e.target.value)}
+                            disabled={processing}
+                            className="border border-input bg-background rounded-md px-3 py-2"
+                            tabIndex={5}
+                        >
+                            <option value="user">I want to book</option>
+                            <option value="host">I want to host</option>
+                        </select>
+                        <InputError message={errors.type} />
                     </div>
 
                     <div className="grid gap-2">
