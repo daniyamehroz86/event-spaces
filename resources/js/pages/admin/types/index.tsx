@@ -12,6 +12,16 @@ import {
   TableCell,
 } from '@/components/ui/table';
 
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from '@/components/ui/pagination'; // adjust path if needed
+
 interface TypeItem {
   id: number;
   name: string;
@@ -19,8 +29,19 @@ interface TypeItem {
   status: 'active' | 'inactive';
 }
 
+interface PaginationLinkType {
+  url: string | null;
+  label: string;
+  active: boolean;
+}
+
 interface Props {
-  types: TypeItem[];
+  types: {
+    data: TypeItem[];
+    current_page: number;
+    last_page: number;
+    links: PaginationLinkType[];
+  };
 }
 
 export default function Index({ types }: Props) {
@@ -36,7 +57,7 @@ export default function Index({ types }: Props) {
     <AppLayout>
       <Head title="Types" />
 
-      <div className="mx-5 p-6 bg-white shadow rounded">
+      <div className="mx-5 p-6 shadow rounded">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-2xl font-bold">Types</h2>
           <Link href={route('admin.types.create')}>
@@ -54,7 +75,7 @@ export default function Index({ types }: Props) {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {types.map((item) => (
+            {types.data.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.name}</TableCell>
                 <TableCell className="capitalize">{item.type}</TableCell>
@@ -66,7 +87,7 @@ export default function Index({ types }: Props) {
                     </Button>
                   </Link>
                   <Button
-                    variant="destructive"
+                    variant="outline"
                     size="sm"
                     onClick={() => handleDelete(item.id)}
                   >
@@ -77,6 +98,49 @@ export default function Index({ types }: Props) {
             ))}
           </TableBody>
         </Table>
+
+        {types.links.length > 3 && (
+          <Pagination className="mt-6 ">
+            <PaginationContent>
+              {types.links.map((link, index) => {
+                if (link.label.includes('Previous')) {
+                  return link.url ? (
+                    <PaginationItem key={index}>
+                      <PaginationPrevious href={link.url} />
+                    </PaginationItem>
+                  ) : null;
+                }
+
+                if (link.label.includes('Next')) {
+                  return link.url ? (
+                    <PaginationItem key={index}>
+                      <PaginationNext href={link.url} />
+                    </PaginationItem>
+                  ) : null;
+                }
+
+                if (link.label === '...') {
+                  return (
+                    <PaginationItem key={index}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+
+                return (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      href={link.url || '#'}
+                      isActive={link.active}
+                    >
+                      {link.label}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </AppLayout>
   );

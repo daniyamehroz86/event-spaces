@@ -29,7 +29,7 @@ export default function Edit({ user }: Props) {
     <AppLayout>
       <Head title={`Edit User: ${user.name}`} />
 
-      <div className="mx-5 p-6 bg-white shadow rounded">
+      <div className="mx-5 p-6  shadow rounded">
         <h2 className="text-2xl font-bold mb-6">Edit User</h2>
 
 

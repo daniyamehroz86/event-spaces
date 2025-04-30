@@ -38,7 +38,7 @@ export default function EditType({ type }: Props) {
     <AppLayout>
       <Head title={`Edit Type: ${type.name}`} />
 
-      <div className="mx-5 p-6 bg-white shadow rounded">
+      <div className="mx-5 p-6  shadow rounded">
         <h2 className="text-xl font-bold mb-4">Edit Type</h2>
 
         <form onSubmit={submit} className="space-y-4">

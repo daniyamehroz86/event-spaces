@@ -17,19 +17,24 @@ class EnsureUserIsActive
     public function handle(Request $request, Closure $next, ...$roles)
     {
         $user = Auth::user();
-
         if ($user) {
-            // Check if the user's status is correct (active or inactive)
-            if ($user->status != 'active') {
-                if (!$request->routeIs('dashboard')) {
+            // If the user is a regular 'user', send to welcome directly
+            if ($user->type === 'user') {
+                return redirect()->route('home');
+            }
+
+            // For 'admin' or 'host' types, check if the user is active
+            if (in_array($user->type, ['admin', 'host'])) {
+                if ($user->status !== 'active') {
                     return redirect()->route('dashboard');
                 }
+
+                // Continue processing for admin or host (e.g., allow request)
+                return $next($request);
             }
 
-            // Check if the user type matches one of the allowed roles (admin or host)
-            if (!in_array($user->type, $roles)) {
-                abort(403, 'You do not have permission to access this page.');
-            }
+            // If type is not recognized
+            abort(403, 'You do not have permission to access this page.');
         }
 
         return $next($request);
