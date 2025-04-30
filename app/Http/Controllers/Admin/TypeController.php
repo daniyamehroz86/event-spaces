@@ -15,7 +15,7 @@ class TypeController extends Controller
      */
     public function index()
     {
-        $types = Type::get(); // Adjust as necessary for your requirements
+        $types = Type::paginate(10); // Adjust per-page limit as needed
         return Inertia::render('admin/types/index', [
             'types' => $types,
         ]);

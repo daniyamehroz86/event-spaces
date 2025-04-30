@@ -12,7 +12,7 @@ class UserController extends Controller
     // Show the list of users
     public function index()
     {
-        $users = User::get(); // Adjust as necessary for your requirements
+        $users = User::paginate(10); // Adjust as necessary for your requirements
         return Inertia::render('admin/users/index', [
             'users' => $users,
         ]);

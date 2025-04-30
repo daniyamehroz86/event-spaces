@@ -29,7 +29,7 @@ export default function CreateType() {
     <AppLayout>
       <Head title="Create Type" />
 
-      <div className="mx-5 p-6 bg-white shadow rounded">
+      <div className="mx-5 p-6  rounded">
         <h2 className="text-xl font-bold mb-4">Create New Type</h2>
 
         <form onSubmit={submit} className="space-y-4">
