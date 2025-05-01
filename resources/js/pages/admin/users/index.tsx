@@ -1,8 +1,9 @@
-import React from 'react';
-import { Head, Link } from '@inertiajs/react';
+import React, { useEffect } from 'react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react'; // ✅ include usePage here
 import AppLayout from '@/layouts/app-layout';
 import { Button } from '@/components/ui/button';
-import { useForm } from '@inertiajs/react';
+import { toast } from 'sonner';
+
 
 import {
   Table,
@@ -22,6 +23,19 @@ import {
   PaginationNext,
   PaginationEllipsis,
 } from '@/components/ui/pagination';
+
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "@/components/ui/alert-dialog";
+
 
 interface User {
   id: number;
@@ -48,10 +62,25 @@ export default function Index({ users }: Props) {
   const { delete: deleteRequest } = useForm();
 
   const handleDelete = (id: number) => {
-    if (confirm('Are you sure you want to delete this user?')) {
       deleteRequest(route('admin.users.destroy', id));
-    }
   };
+
+  interface PageProps {
+    flash?: {
+      success?: string;
+    };
+    [key: string]: any; // 👈 This makes it compatible with Inertia's expected structure
+  }
+
+  // Use the generic to type `props`
+  const { props } = usePage<PageProps>();
+
+  useEffect(() => {
+
+    if (props.flash?.success) {
+      toast.success(props.flash.success);
+    }
+  }, [props.flash]);
 
   return (
     <AppLayout>
@@ -88,13 +117,26 @@ export default function Index({ users }: Props) {
                       Edit
                     </Button>
                   </Link>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </Button>
+                  <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm">Delete</Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This will permanently delete <strong>{user.name}</strong>'s account. This action cannot be undone.
+                            </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction onClick={() => handleDelete(user.id)}>
+                                Confirm Delete
+                            </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
+
                 </TableCell>
               </TableRow>
             ))}
