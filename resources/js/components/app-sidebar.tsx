@@ -76,7 +76,7 @@ export function AppSidebar() {
                     subItems: [
                       {
                         title: 'Add New',
-                        href: 'stepper',
+                        href: '/stepper',
 
                       },
                     ]
