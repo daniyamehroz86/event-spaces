@@ -69,21 +69,20 @@ export function AppSidebar() {
                       // Add more subItems if needed for other types like facilities or amenities
                     ]
                   },
-                  {
-                    title: 'Event',
-                    href: 'stepper',
-                    icon: Users,
-                    subItems: [
-                      {
-                        title: 'Add New',
-                        href: '/stepper',
-
-                      },
-                    ]
-                },
-
               ]
             : []),
+            {
+                title: 'Event Manage',
+                href: '/stepper',
+                icon: LayoutGrid,
+                subItems: [
+                    {
+                      title: 'Add Event',
+                      href: '/stepper',
+
+                    },
+                  ]
+            },
     ];
 
 
