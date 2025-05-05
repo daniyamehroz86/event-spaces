@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -19,6 +20,8 @@ class AdminUserSeeder extends Seeder
                 'name' => 'Super Admin',
                 'password' => '12345678',
                 'type' => 'admin',
+                'email_verified_at' => Carbon::now(), // <-- mark as verified
+
             ]
         );
     }
